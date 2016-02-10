@@ -16,7 +16,7 @@
     	<property name="format_sql">true</property>
     	<property name="hbm2ddl.auto">update</property>
     	
-    	
+    	<property name="use_identifier_roolback">true</property>
     	<property name="connection.isolation">2</property>
     	
     	<mapping resource="com/tony/hibernate/entities/News.hbm.xml"/>

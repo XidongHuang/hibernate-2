@@ -2,6 +2,8 @@ package com.tony.hibernate.entities;
 
 import static org.junit.Assert.*;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
 
 import org.hibernate.LazyInitializationException;
@@ -13,6 +15,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.jdbc.Work;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +50,123 @@ public class HibernateTest {
 		sessionFactory.close();
 	
 	}
+	
+	@Test
+	public void testDoWork(){
+		session.doWork(new Work() {
+			
+			@Override
+			public void execute(Connection connection) throws SQLException {
+				System.out.println(connection);
+
+				//Invoke process of saving
+			}
+		});
+		
+		
+	}
+	
+	
+	/**
+	 * evict: delete a specific persist object from session cache
+	 * 
+	 * 
+	 */
+	@Test
+	public void testEvict(){
+		
+		News news1 = session.get(News.class, 1);
+		News news2 = session.get(News.class, 2);
+		
+		news1.setTitle("AA");
+		news2.setTitle("BB");
+		
+		session.evict(news1);
+	}
+	
+	
+	/**
+	 * delete: execute delete operation. If OID equals a record in database, it will run deletion.
+	 * If OID do not have the corresponding record, it throws an Exception.
+	 * 
+	 * Set the configuration file of hibernate, "hibernate.use_identifier_rollback" is "true"
+	 * to let the deleted object's OID to be set to null 
+	 * 
+	 */
+	@Test
+	public void testDelete(){
+		//Dissociate object
+//		News news = new News();
+//		news.setId(2);
+		
+		//Persist object
+		News news = session.get(News.class, 5);
+		session.delete(news);
+	}
+	
+	
+	
+	/**
+	 * Notice:
+	 * 1. If OID is not null, but database does not have the corresponding record. It throws an Exception.
+	 * 2. OID's value equal the value of id's unsaved-value, it will be considered a dissociate object 
+	 * 
+	 */
+	
+	@Test
+	public void testSaveOrUpdate(){
+		News news = new News("FF", "ff", new Date());
+		news.setId(11);
+		session.saveOrUpdate(news);
+		
+		
+	}
+	
+	
+	
+	/**
+	 * update:
+	 * 1. If update a persist object, it is not necessary to invoke update() method.
+	 * 	  Because session will execute flush() method then transaction running commit() method
+	 * 
+	 * 2. Updating a dissociate object needs to invoke update() method individually.
+	 * 	  It can persist a dissociate object.
+	 * 
+	 * Notice:
+	 * 1. No matter the updating dissociate objects whether are the same as database records,
+	 * 	  update() method will send UPDATE sql to database.
+	 * 
+	 * 	  How can we let update() method do not send sql blindly?
+	 * 	  Answer: Set "select-before-update=true" in .hbm.xml file's class.(But don't set this attribute usually)
+	 * 
+	 * 2. If database tables do not have corresponding records, but invoke update() method, it will throw exception
+	 * 
+	 * 3. If update() method relates to a dissociate object but there is a persist
+	 * 	  object with a same OID in the Session, then it will throw an exception.
+	 * 	  Because there are no two same OID object in the cache of Session
+	 */
+	
+	@Test
+	public void testUpdate(){
+		News news = session.get(News.class, 2);
+		
+		transation.commit();
+		session.close();
+		
+		session = sessionFactory.openSession();
+		transation = session.beginTransaction();
+		
+		
+		News news2 = session.get(News.class, 2);
+		session.clear();
+		
+//		news.setAuthor("SUN");
+		
+		session.update(news);
+		
+		
+	}
+	
 	
 
 	/**
