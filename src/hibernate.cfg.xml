@@ -33,11 +33,15 @@
     	<property name="hibernate.jdbc.fetch_size">100</property>
     	
 		<property name="jdbc.batch_size">30</property>    	
-		
+<!-- 		
     	<mapping resource="com/tony/hibernate/entities/News.hbm.xml"/>
     	<mapping resource="com/tony/hibernate/entities/Worker.hbm.xml"/>
     	<mapping resource="com/tony/hibernate/entities/n21/Customer.hbm.xml"/>
     	<mapping resource="com/tony/hibernate/entities/n21/Order.hbm.xml"/>
+
+ -->
+    	<mapping resource="com/tony/hibernate/entities/n21/both/Customer.hbm.xml"/>
+    	<mapping resource="com/tony/hibernate/entities/n21/both/Order.hbm.xml"/>
     	
     </session-factory>
 </hibernate-configuration>

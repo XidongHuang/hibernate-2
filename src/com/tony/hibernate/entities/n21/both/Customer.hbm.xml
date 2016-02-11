@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-Feb-2016 6:09:04 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="com.tony.hibernate.entities.n21.both">
+    <class name="Customer" table="CUSTOMERS">
+        <id name="customerId" type="java.lang.Integer">
+            <column name="CUSTOMER_ID" />
+            <generator class="native" />
+        </id>
+        <property name="customerName" type="java.lang.String">
+            <column name="CUSTOMER_NAME" />
+        </property>
+        
+        <!-- Mapping the collection field of "one" to "many" -->
+        <!-- 
+        	set: Mapping "Set" field type 
+        	table: which table should the "Set" elements be stored in. This name should be same as the "many" table
+        	
+         -->
+         <!-- 
+         	inverse: Specific which side to maintenance the instance relation. 
+         	If it is set to "true", then let the "many" side to maintenance
+          -->
+		<!-- 
+			cascade: Set cascade operation. 
+			In real developing situation, it should not be set. Manual operation is better than it.
+		 --> 
+		 <!-- order-by: It will sort elements in querying. It use the name in table, instead of persistent class field name   -->         
+        <set name="orders" table="ORDERS" inverse="true"  order-by="ORDER_NAME DESC">
+        	<!-- THe foreign key's name   -->
+        	<key column="CUSTOMER_ID"></key>
+        	<!-- Specific mapping type -->
+        	<one-to-many class="Order"/>
+        
+        </set>
+        
+    </class>
+</hibernate-mapping>
