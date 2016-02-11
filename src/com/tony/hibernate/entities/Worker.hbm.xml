@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-Feb-2016 4:43:47 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="com.tony.hibernate.entities">
+    <class name="Worker" table="WORKER">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+      
+      	<!-- Mapping composing relation -->
+      	<component name="pay" class="Pay">
+      	<parent name="worker"/>
+      		<!-- Configure the relation of components attributes -->
+      		<property name="monthlyPay" column="MONTHLY_PAY"></property>
+      		<property name="yearPay" column="YEAR_PAY"></property>
+      		<property name="vocationWithPay" column="VOCATION_WITH_PAY"></property>
+      		
+      	
+      	
+      	</component>
+        
+        
+    </class>
+</hibernate-mapping>

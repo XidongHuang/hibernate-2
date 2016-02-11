@@ -1,6 +1,8 @@
 package com.tony.hibernate.entities;
 
+import java.sql.Blob;
 import java.util.Date;
+
 
 public class News {
 
@@ -9,6 +11,45 @@ public class News {
 	private String author;
 
 	private Date date;
+	
+	
+	
+	//The fieldis: title: author
+	private String desc;
+	
+	
+	//Text
+	private String content;
+	
+	//Binary data
+	private Blob image;
+
+	
+	
+	
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Blob getImage() {
+		return image;
+	}
+
+	public void setImage(Blob image) {
+		this.image = image;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
 
 	public Integer getId() {
 		return id;
